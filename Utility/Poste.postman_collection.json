@@ -1,0 +1,252 @@
+{
+	"info": {
+		"_postman_id": "626f134d-533b-49c7-8974-c4d8cdd15508",
+		"name": "Poste",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "997142"
+	},
+	"item": [
+		{
+			"name": "Get positions",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "test_token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/Patrimonio/positions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"Patrimonio",
+						"positions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete positions",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "test_token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/Patrimonio/positions/12345",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"Patrimonio",
+						"positions",
+						"12345"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get position",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/Patrimonio/positions/1234",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"Patrimonio",
+						"positions",
+						"1234"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add position",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ndg\":\"1234\",\r\n    \"assets\": [{\r\n        \"isin\": \"123\",\r\n        \"quantity\": 2,\r\n        \"price\": 100\r\n    },\r\n    {\r\n        \"isin\": \"456\",\r\n        \"quantity\": 1,\r\n        \"price\": 300\r\n    },\r\n    {\r\n        \"isin\": \"7890\",\r\n        \"quantity\": 1,\r\n        \"price\": 300\r\n    }\r\n\r\n    ],\r\n    \"balance\": 800.01\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/Patrimonio/positions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"Patrimonio",
+						"positions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Task",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ndg\": \"1234567\",\r\n    \"description\":\"Ciao\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/tasks/1234567",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks",
+						"1234567"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Start Update Price task",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ndg\":\"123\",\r\n    \"assets\": [{\r\n        \"isin\": \"123\",\r\n        \"quantity\": 2,\r\n        \"price\": 100\r\n    },\r\n    {\r\n        \"isin\": \"456\",\r\n        \"quantity\": 1,\r\n        \"price\": 300\r\n    },\r\n    {\r\n        \"isin\": \"7890\",\r\n        \"quantity\": 1,\r\n        \"price\": 300\r\n    }\r\n\r\n    ],\r\n    \"balance\": 800.00\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8091/tasks/pricetask?inputPath=D:\\Progetti Astro\\TAS\\Poste\\pricetask\\input&fileName=AssetPrice.csv&completedPath=D:\\Progetti Astro\\TAS\\Poste\\pricetask\\completed&discardedPath=D:\\Progetti Astro\\TAS\\Poste\\pricetask\\discarded",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8091",
+					"path": [
+						"tasks",
+						"pricetask"
+					],
+					"query": [
+						{
+							"key": "inputPath",
+							"value": "D:\\Progetti Astro\\TAS\\Poste\\pricetask\\input"
+						},
+						{
+							"key": "fileName",
+							"value": "AssetPrice.csv"
+						},
+						{
+							"key": "completedPath",
+							"value": "D:\\Progetti Astro\\TAS\\Poste\\pricetask\\completed"
+						},
+						{
+							"key": "discardedPath",
+							"value": "D:\\Progetti Astro\\TAS\\Poste\\pricetask\\discarded"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update position",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "test_token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ndg\":\"12345\",\r\n    \"assets\": [{\r\n        \"isin\": \"123\",\r\n        \"quantity\": 2,\r\n        \"price\": 100\r\n    },\r\n    {\r\n        \"isin\": \"456\",\r\n        \"quantity\": 1,\r\n        \"price\": 300\r\n    },\r\n    {\r\n        \"isin\": \"7890\",\r\n        \"quantity\": 1,\r\n        \"price\": 300\r\n    }\r\n\r\n    ],\r\n    \"balance\": 900.01\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/Patrimonio/positions/12345",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"Patrimonio",
+						"positions",
+						"12345"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

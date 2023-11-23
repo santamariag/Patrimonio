@@ -1,0 +1,36 @@
+server:
+  maxThreads: 512
+  applicationContextPath: /Patrimonio
+  applicationConnectors:
+    - type: http
+      port: 8090
+  adminConnectors:
+    - type: http
+      port: 8091
+
+logging:
+  level: INFO
+  loggers:
+    it.poste.patrimonio: DEBUG
+
+mongo:
+  provider: MONGODB
+  jta.platform: org.hibernate.service.jta.platform.internal.JBossStandAloneJtaPlatform
+  host: localhost:27017
+  database: Test
+  create.database: true
+  
+swagger:
+  basePath: /Patrimonio
+  resourcePackage: it.poste.patrimonio.ms.resources
+  scan: true
+  info:
+    version: "1.0.0"
+    title: "Positions API CRUD"
+    description: "A simple API used for expose CRUD operation on MongoDB collection"
+    termsOfService: "http://swagger.io/terms/"
+    contact:
+      name: "Positions API "
+      
+soapConfig:
+  positionEndPoint: /PositionService

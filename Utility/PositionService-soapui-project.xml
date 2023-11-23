@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="447c4868-7864-40fe-89b1-dfb6cbb70583" activeEnvironment="Default" name="PositionService" resourceRoot="" soapui-version="5.7.0" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="8af7ef9f-cd66-400d-8e4a-f03d5b84fe34" wsaVersion="NONE" name="PositionServiceSoapBinding" type="wsdl" bindingName="{http://ws.resources.ms.patrimonio.poste.it/}PositionServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8090/Patrimonio/soap/PositionService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8090/Patrimonio/soap/PositionService?wsdl"><con:part><con:url>http://localhost:8090/Patrimonio/soap/PositionService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="PositionService" targetNamespace="http://ws.resources.ms.patrimonio.poste.it/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.resources.ms.patrimonio.poste.it/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://ws.resources.ms.patrimonio.poste.it/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="getPosition" type="tns:getPosition"/>
+      <xs:element name="getPositionResponse" type="tns:getPositionResponse"/>
+      <xs:element name="getPositions" type="tns:getPositions"/>
+      <xs:element name="getPositionsResponse" type="tns:getPositionsResponse"/>
+      <xs:complexType name="getPositions">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="getPositionsResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="positions">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="position" type="tns:Position"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType final="extension restriction" name="Position">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ndg" type="xs:string"/>
+          <xs:element minOccurs="0" name="assets">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="asset" type="tns:Asset"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="balance" type="xs:decimal"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType final="extension restriction" name="Asset">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="isin" type="xs:string"/>
+          <xs:element minOccurs="0" name="price" type="xs:decimal"/>
+          <xs:element minOccurs="0" name="quantity" type="xs:long"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getPosition">
+        <xs:sequence>
+          <xs:element name="ndg" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getPositionResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="position" type="tns:Position"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getPositions">
+    <wsdl:part element="tns:getPositions" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPositionResponse">
+    <wsdl:part element="tns:getPositionResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPosition">
+    <wsdl:part element="tns:getPosition" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPositionsResponse">
+    <wsdl:part element="tns:getPositionsResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="PositionSoapService">
+    <wsdl:operation name="getPositions">
+      <wsdl:input message="tns:getPositions" name="getPositions"></wsdl:input>
+      <wsdl:output message="tns:getPositionsResponse" name="getPositionsResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPosition">
+      <wsdl:input message="tns:getPosition" name="getPosition"></wsdl:input>
+      <wsdl:output message="tns:getPositionResponse" name="getPositionResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PositionServiceSoapBinding" type="tns:PositionSoapService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getPositions">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getPositions">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getPositionsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPosition">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getPosition">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getPositionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PositionService">
+    <wsdl:port binding="tns:PositionServiceSoapBinding" name="PositionSoapServicePort">
+      <soap:address location="http://localhost:8090/Patrimonio/soap/PositionService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8090/Patrimonio/soap/PositionService</con:endpoint></con:endpoints><con:operation id="ff06a632-58ac-4312-934c-0264c81db87b" isOneWay="false" action="" name="getPosition" bindingOperationName="getPosition" type="Request-Response" outputName="getPositionResponse" inputName="getPosition" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="8d2eba84-b7a8-4014-a3a5-1d44b8a6841e" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8090/Patrimonio/soap/PositionService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.resources.ms.patrimonio.poste.it/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:getPosition>\r
+         <ndg>1234</ndg>\r
+      </ws:getPosition>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.resources.ms.patrimonio.poste.it/PositionSoapService/getPosition"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="ae6d712c-f91e-4adb-9195-c0418d3dc50e" isOneWay="false" action="" name="getPositions" bindingOperationName="getPositions" type="Request-Response" outputName="getPositionsResponse" inputName="getPositions" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="402351dc-5da1-402b-b42f-6a7a0160fba5" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8090/Patrimonio/soap/PositionService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.resources.ms.patrimonio.poste.it/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ws:getPositions/>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.resources.ms.patrimonio.poste.it/PositionSoapService/getPositions"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>
