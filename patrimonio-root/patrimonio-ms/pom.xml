@@ -20,8 +20,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <dropwizard.version>2.0.35</dropwizard.version>
         <mainClass>it.poste.patrimonio.ms.PatrimonioServiceApplication</mainClass>
-		<!-- automatically run annotation processors within the incremental compilation -->  
-		<m2e.apt.activation>jdt_apt</m2e.apt.activation>
     </properties>
 
     <dependencyManagement>

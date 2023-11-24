@@ -55,6 +55,25 @@
 			<groupId>it.poste.patrimonio</groupId>
 			<artifactId>patrimonio-config</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>it.poste.patrimonio</groupId>
+			<artifactId>patrimonio-bl</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+		
+		<dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka_2.10</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -109,6 +128,23 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <annotationProcessorPaths>
+			            <path>
+			                <groupId>org.mapstruct</groupId>
+			                <artifactId>mapstruct-processor</artifactId>
+			                <version>1.6.0.Beta1</version>
+			            </path>
+			            <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.28</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>0.2.0</version>
+                        </path>
+        			</annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>

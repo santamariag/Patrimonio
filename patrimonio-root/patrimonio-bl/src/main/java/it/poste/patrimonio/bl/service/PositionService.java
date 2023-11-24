@@ -71,6 +71,16 @@ public class PositionService {
 		positionDAO.merge(PositionMapper.INSTANCE.positionApiToPosition(position));
 
 	}
+	
+	public void saveOrUpdate(PositionApi position) {
+
+		Optional<Position> positionOpt=positionDAO.findById(position.getNdg());
+		
+		if(positionOpt.isPresent()) 
+			positionDAO.merge(PositionMapper.INSTANCE.positionApiToPosition(position));
+		else
+			positionDAO.persist(PositionMapper.INSTANCE.positionApiToPosition(position));
+	}
 
 	@Transactional
 	public boolean delete(String ndg) {

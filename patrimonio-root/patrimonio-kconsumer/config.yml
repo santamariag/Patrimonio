@@ -1,4 +1,32 @@
+server:
+  maxThreads: 512
+  applicationContextPath: /Patrimonio
+  applicationConnectors:
+    - type: http
+      port: 8092
+  adminConnectors:
+    - type: http
+      port: 8093
+
 logging:
   level: INFO
   loggers:
     it.poste.patrimonio: DEBUG
+    
+mongo:
+  provider: MONGODB
+  jta.platform: org.hibernate.service.jta.platform.internal.JBossStandAloneJtaPlatform
+  host: localhost:27017
+  database: Test
+  create.database: true
+    
+messageHandlerConfig:
+  number: 1
+
+kafkaConfig:
+  topic: kafka-mongo-integration
+  zookeeperConnect: localhost:2181
+  groupId: testGroup
+  zookeeperSessionTimeout: 5000
+  zookeeperSyncTime: 250
+  autoCommitInterval: 1000

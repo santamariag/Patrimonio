@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -36,7 +35,7 @@ public final class Position implements Serializable {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Asset> assets=new ArrayList<Asset>();
     
-    @NotNull
+    //@NotNull
     private Double balance;
 
 
