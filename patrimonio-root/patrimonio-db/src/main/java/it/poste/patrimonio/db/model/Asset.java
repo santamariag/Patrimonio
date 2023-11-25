@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public final class Asset implements Serializable {
+public class Asset implements Serializable {
 	
 	/**
 	 * 

@@ -21,7 +21,7 @@ import lombok.Data;
 @Entity
 @Table(name = "positions")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class Position implements Serializable {
+public class Position implements Serializable {
 
     private static final long serialVersionUID = 6094641399168955491L;
 
