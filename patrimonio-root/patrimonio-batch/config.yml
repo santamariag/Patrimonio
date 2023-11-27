@@ -38,3 +38,6 @@ priceFileConfig:
 jobsConfig:
   priceJob: "0/15 * * * * ?"
   
+paging:
+  pageSize: 5
+  

@@ -20,6 +20,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 
 import it.poste.patrimonio.bl.service.BatchService;
 import it.poste.patrimonio.bl.util.Mode;
+import it.poste.patrimonio.config.batch.PageConfiguration;
 import it.poste.patrimonio.itf.batch.api.PriceApi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PriceFileAction extends JobAction {
 
 	private final BatchService batchService;
+	private final PageConfiguration paging;
 	
 	private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
 
@@ -67,7 +69,7 @@ public class PriceFileAction extends JobAction {
 				log.error(e.getMessage());
 			}
 
-			boolean success=managePersistency(prices);
+			boolean success=managePersistence(prices);
 
 			return success ? moveToCompleted(file, parameters.get("completedPath").get(0))
 					: moveToDiscarded(file, parameters.get("discardedPath").get(0));
@@ -77,7 +79,7 @@ public class PriceFileAction extends JobAction {
 
 	}
 
-	private boolean managePersistency(List<PriceApi> prices) {
+	private boolean managePersistence(List<PriceApi> prices) {
 
 		boolean success=true;
 		try {
@@ -89,7 +91,7 @@ public class PriceFileAction extends JobAction {
 					PriceApi findPrice=priceOpt.get();
 					if(p.getPrice().compareTo(findPrice.getPrice())!=0) {
 						log.info("Price present with different value...updating");
-						batchService.managePriceAndPosition(p, Mode.UPDATE);
+						batchService.managePriceAndPosition(p, Mode.UPDATE, paging.getPageSize());
 
 					} else {
 						log.info("Price present with same value...nothing to do");
@@ -97,7 +99,7 @@ public class PriceFileAction extends JobAction {
 
 				} else {
 					log.info("Price not present...inserting");
-					batchService.managePriceAndPosition(p, Mode.INSERT);
+					batchService.managePriceAndPosition(p, Mode.INSERT, paging.getPageSize());
 				}
 
 			});

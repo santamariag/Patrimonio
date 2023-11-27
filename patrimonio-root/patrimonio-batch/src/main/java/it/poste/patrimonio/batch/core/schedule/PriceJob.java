@@ -13,6 +13,7 @@ import org.knowm.sundial.exceptions.JobInterruptException;
 
 import it.poste.patrimonio.batch.core.common.PriceFileAction;
 import it.poste.patrimonio.bl.service.BatchService;
+import it.poste.patrimonio.config.batch.PageConfiguration;
 import it.poste.patrimonio.config.batch.PriceFileConfiguration;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,13 +33,15 @@ public class PriceJob extends Job {
 		
 		PriceFileConfiguration config = PriceFileConfiguration.class.cast(SundialJobScheduler.getServletContext().getAttribute("priceFileConfig"));
 		
+		PageConfiguration paging = PageConfiguration.class.cast(SundialJobScheduler.getServletContext().getAttribute("pageConfig"));
+		
 		Map<String, List<String>> parameters=buildParameters(config);
 				
 		this.batchService = BatchService.class.cast(SundialJobScheduler.getServletContext().getAttribute("batchService"));
 				
 		getJobContext().put("params", parameters);
 		
-		new PriceFileAction(batchService).run();;
+		new PriceFileAction(batchService, paging).run();;
 		
 	}
 

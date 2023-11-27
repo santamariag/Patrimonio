@@ -27,7 +27,7 @@ public class BatchService {
 	
 	
 	@Transactional
-	public void managePriceAndPosition(PriceApi price, Mode mode) {
+	public void managePriceAndPosition(PriceApi price, Mode mode, Long pageSize) {
 		
 		switch (mode) {
 		case INSERT:
@@ -45,7 +45,7 @@ public class BatchService {
 			return;
 		}
 		
-		positionService.updateByIsin(price.getIsin(), price.getPrice());
+		positionService.updateByIsinPaged(price.getIsin(), price.getPrice(), pageSize);
 		
 	}
 	

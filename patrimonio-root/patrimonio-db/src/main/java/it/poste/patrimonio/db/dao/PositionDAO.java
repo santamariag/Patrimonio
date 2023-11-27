@@ -26,11 +26,29 @@ public class PositionDAO extends BaseDAO<Position> {
         
     }
     
-	@SuppressWarnings("unchecked")
+    public Long countByIsin(String isin) {
+    	
+    	return (Long)getEntityManager()
+    				.createNativeQuery("db.positions.count({ 'assets.isin' : '"+isin+"'"+" })" )
+    				.getSingleResult();
+    }
+    
+    @SuppressWarnings("unchecked")
 	public List<Position> findByIsin(String isin) {
 		
 		return getEntityManager()
 	            .createNativeQuery( "{ 'assets.isin' : '"+isin+"'"+" }", Position.class )
+	            .getResultList();
+		 
+	}
+    
+	@SuppressWarnings("unchecked")
+	public List<Position> findByIsinPaged(String isin, Long offset, Long pageSize) {
+		
+		return getEntityManager()
+	            .createNativeQuery( "{ 'assets.isin' : '"+isin+"'"+" }", Position.class )
+	            .setFirstResult(offset.intValue())
+	            .setMaxResults(pageSize.intValue())
 	            .getResultList();
 		 
 	}

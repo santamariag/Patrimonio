@@ -16,7 +16,6 @@ import it.poste.patrimonio.db.model.Position;
 import it.poste.patrimonio.itf.api.PositionApi;
 import it.poste.patrimonio.itf.mapper.PositionMapper;
 
-
 public class PositionService {
 
 
@@ -95,9 +94,25 @@ public class PositionService {
 	
 
 	public void updateByIsin(String isin, Double price) {
-
+		
 		List<Position> positions = positionDAO.findByIsin(isin);
 
+		updatePositions(isin, price, positions);
+
+
+	}
+	
+	public void updateByIsinPaged(String isin, Double price, Long pageSize) {
+
+		Long countByIsin=positionDAO.countByIsin(isin);
+		
+		processPositionsByPage(countByIsin, isin, price, pageSize);
+
+
+	}
+
+
+	private void updatePositions(String isin, Double price, List<Position> positions) {
 		for (Position p : positions) {
 			Double newBalance=BigDecimal.ZERO.doubleValue();
 			List<Asset> assets=p.getAssets();
@@ -110,8 +125,26 @@ public class PositionService {
 			p.setBalance(newBalance);
 			positionDAO.persist(p);
 		}
-
-
 	}
+
+
+	private void processPositionsByPage(Long countByIsin, String isin, Double price, Long pageSize) {
+		
+		Long pageNumber=calculatePagesCount(pageSize, countByIsin);
+		
+		for (long page=1; page <=pageNumber; page++) {
+			Long offset = (page - 1) * pageSize;
+			List<Position> positions = positionDAO.findByIsinPaged(isin, offset, pageSize);
+						
+			updatePositions(isin, price, positions);
+			
+		}
+	
+	}
+	
+	private Long calculatePagesCount(long pageSize, long totalCount) {
+
+        return totalCount < pageSize ? 1 : (long) Math.ceil((double) totalCount / (double) pageSize);
+    }
 
 }

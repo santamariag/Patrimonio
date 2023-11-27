@@ -31,6 +31,9 @@ public class PatrimonioBatchConfiguration extends Configuration {
     
     @JsonProperty("jobsConfig")
     private Map<String , String> jobsConfig;
+    
+    @JsonProperty("paging")
+    private PageConfiguration pageConfig;
 
 	public MongoConfiguration getDatabaseConfiguration() {
 		return databaseConfiguration;
@@ -47,7 +50,8 @@ public class PatrimonioBatchConfiguration extends Configuration {
 	public Map<String, String> getJobsConfig() {
 		return jobsConfig;
 	}
-    
-    
 
+	public PageConfiguration getPageConfig() {
+		return pageConfig;
+	}
 }

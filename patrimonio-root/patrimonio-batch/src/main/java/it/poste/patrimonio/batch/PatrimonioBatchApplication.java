@@ -62,11 +62,12 @@ public class PatrimonioBatchApplication extends Application<PatrimonioBatchConfi
     	injector.getInstance(PersistInitialiser.class);
     	
     	  // tasks        
-        environment.admin().addTask(new PriceTask(injector.getInstance(BatchService.class)));
+        environment.admin().addTask(new PriceTask(injector.getInstance(BatchService.class), configuration.getPageConfig()));
         
         // scheduled job
         environment.getApplicationContext().setAttribute("priceFileConfig", configuration.getPriceFileConfiguration());
         environment.getApplicationContext().setAttribute("batchService", injector.getInstance(BatchService.class));
+        environment.getApplicationContext().setAttribute("pageConfig", configuration.getPageConfig());
         
     
         SundialJobScheduler.createScheduler(new SchedulerFactory());
