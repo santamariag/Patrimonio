@@ -1,6 +1,7 @@
 package it.poste.patrimonio.bl.service;
 
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +11,11 @@ import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 
 import it.poste.patrimonio.db.dao.PositionDAO;
+import it.poste.patrimonio.db.model.Asset;
 import it.poste.patrimonio.db.model.Position;
 import it.poste.patrimonio.itf.api.PositionApi;
 import it.poste.patrimonio.itf.mapper.PositionMapper;
+
 
 public class PositionService {
 
@@ -22,11 +25,6 @@ public class PositionService {
 	 * DAO position.
 	 */
 	private PositionDAO positionDAO;
-	
-	/**
-	 * DAO price.
-	 */
-	//private PriceDAO priceDAO;
 
 	/**
 	 * Constructor.
@@ -34,9 +32,8 @@ public class PositionService {
 	 * @param positionDAO the dao position.
 	 */
 	@Inject
-	public PositionService(final PositionDAO positionDAO/*, final PriceDAO priceDAO*/) {
+	public PositionService(final PositionDAO positionDAO) {
 		this.positionDAO = positionDAO;
-		//this.priceDAO = priceDAO;
 	}
 
 
@@ -95,43 +92,26 @@ public class PositionService {
 		return false;
 
 	}
-
-	/*public void insertPrice(Price price) {
-
-		priceDAO.insertPrice(price);
-
-	}
-
-	public Price findPrice(String isin) {
-
-		return priceDAO.findPrice(isin);
-
-	}
-
-
-	public void updatePrice(String isin, BigDecimal price) {
-
-		priceDAO.updatePrice(isin, price);
-
-	}*/
 	
-	/*public void updateByIsin(String isin, BigDecimal price) {
-		
-		List<Position> positions= positionDAO.findByIsin(isin);
 
-		 for (Position p : positions) {
-			 BigDecimal newBalance=BigDecimal.ZERO;
-			 List<Asset> assets=p.getAssets();
-			 for (Asset a : assets) {
-				 if(a.getIsin().equals(isin)) {
-					 a.setPrice(price);
-				 }
-				newBalance=newBalance.add(a.getPrice().multiply(new BigDecimal(a.getQuantity())));	    			
-			 }
-			 p.setBalance(newBalance);
-			 positionDAO.save(p);
-		 }
-		
-	}*/
+	public void updateByIsin(String isin, Double price) {
+
+		List<Position> positions = positionDAO.findByIsin(isin);
+
+		for (Position p : positions) {
+			Double newBalance=BigDecimal.ZERO.doubleValue();
+			List<Asset> assets=p.getAssets();
+			for (Asset a : assets) {
+				if(a.getIsin().equals(isin)) {
+					a.setPrice(price);
+				}
+				newBalance=newBalance+(a.getPrice()*a.getQuantity());	    			
+			}
+			p.setBalance(newBalance);
+			positionDAO.persist(p);
+		}
+
+
+	}
 
 }

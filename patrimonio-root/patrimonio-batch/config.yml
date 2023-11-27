@@ -1,4 +1,40 @@
+server:
+  maxThreads: 512
+  applicationContextPath: /Patrimonio
+  applicationConnectors:
+    - type: http
+      port: 8094
+  adminConnectors:
+    - type: http
+      port: 8095
+
 logging:
   level: INFO
   loggers:
     it.poste.patrimonio: DEBUG
+    
+mongo:
+  provider: MONGODB
+  jta.platform: org.hibernate.service.jta.platform.internal.JBossStandAloneJtaPlatform
+  host: localhost:27017
+  database: Test
+  create.database: true
+  
+sundial:
+  thread-pool-size: 10
+  shutdown-on-unload: true
+  start-delay-seconds: 0
+  start-scheduler-on-load: true
+  global-lock-on-load: false
+  annotated-jobs-package-name: it.poste.patrimonio.batch.core.schedule
+  #tasks: [startjob, stopjob]
+  
+priceFileConfig:
+  inputPath: D:\Progetti Astro\TAS\Poste\pricetask\input
+  fileName: AssetPrice.csv
+  completedPath: D:\Progetti Astro\TAS\Poste\pricetask\completed
+  discardedPath: D:\Progetti Astro\TAS\Poste\pricetask\discarded
+  
+jobsConfig:
+  priceJob: "0/15 * * * * ?"
+  

@@ -148,7 +148,6 @@
     <dropwizard.version>2.0.35</dropwizard.version>
     <mainClass>it.poste.patrimonio.ms.PatrimonioServiceApplication</mainClass>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <m2e.apt.activation>jdt_apt</m2e.apt.activation>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 </project>

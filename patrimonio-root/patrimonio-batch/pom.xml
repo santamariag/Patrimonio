@@ -56,6 +56,19 @@
 			<groupId>it.poste.patrimonio</groupId>
 			<artifactId>patrimonio-config</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>it.poste.patrimonio</groupId>
+			<artifactId>patrimonio-bl</artifactId>
+		</dependency>
+		<dependency>
+    		<groupId>org.knowm</groupId>
+    		<artifactId>dropwizard-sundial</artifactId>
+		</dependency>
+		
+		<dependency>
+  			<groupId>de.spinscale.dropwizard</groupId>
+  			<artifactId>dropwizard-jobs-core</artifactId>
+		</dependency>
     </dependencies>
 
     <build>
