@@ -13,6 +13,7 @@ import com.google.inject.persist.Transactional;
 import it.poste.patrimonio.db.dao.PositionDAO;
 import it.poste.patrimonio.db.model.Asset;
 import it.poste.patrimonio.db.model.Position;
+import it.poste.patrimonio.itf.api.AssetApi;
 import it.poste.patrimonio.itf.api.PositionApi;
 import it.poste.patrimonio.itf.mapper.PositionMapper;
 
@@ -58,17 +59,28 @@ public class PositionService {
 
 	public void save(PositionApi position) {
 
+		if(position.getBalance()==null)
+			position.setBalance(calculateBalance(position.getAssets()));
 		
 		positionDAO.persist(PositionMapper.INSTANCE.positionApiToPosition(position));
 	}
 
-	public void update(PositionApi position) {
+	
 
+
+	public void update(PositionApi position) {
+		
+		if(position.getBalance()==null)
+			position.setBalance(calculateBalance(position.getAssets()));
+		
 		positionDAO.merge(PositionMapper.INSTANCE.positionApiToPosition(position));
 
 	}
 	
 	public void saveOrUpdate(PositionApi position) {
+		
+		if(position.getBalance()==null)
+			position.setBalance(calculateBalance(position.getAssets()));
 
 		Optional<Position> positionOpt=positionDAO.findById(position.getNdg());
 		
@@ -146,5 +158,12 @@ public class PositionService {
 
         return totalCount < pageSize ? 1 : (long) Math.ceil((double) totalCount / (double) pageSize);
     }
+	
+	private BigDecimal calculateBalance(List<AssetApi> assets) {
+		
+		return assets.stream()
+				        .map(a -> a.getPrice().multiply(BigDecimal.valueOf(a.getQuantity())))
+				        .reduce(BigDecimal.ZERO, BigDecimal::add);
+	}
 
 }
