@@ -21,44 +21,67 @@ import it.poste.patrimonio.db.model.Position;
 @Transactional
 public class PositionDAO extends BaseDAO<Position> {
 
-    @Inject
-    public PositionDAO(final Provider<EntityManager> entityManager) {
-        super(entityManager);
-    }
+	@Inject
+	public PositionDAO(final Provider<EntityManager> entityManager) {
+		super(entityManager);
+	}
 
-    public Optional<Position> findById(final String ndg) {
-    	
-        return findById(Position.class, ndg);
-        
-    }
-    
-    public Long countByIsin(String isin) {
-    	
-    	return (Long)getEntityManager()
-    				.createNativeQuery("db.positions.count({ 'assets.isin' : '"+isin+"'"+" })" )
-    				.getSingleResult();
-    }
-    
-    @SuppressWarnings("unchecked")
-	public List<Position> findByIsin(String isin) {
-		
-		return getEntityManager()
-	            .createNativeQuery( "{ 'assets.isin' : '"+isin+"'"+" }", Position.class )
-	            .getResultList();
-		 
+	public Optional<Position> findById(final String ndg) {
+
+		return findById(Position.class, ndg);
+
 	}
-    
-	@SuppressWarnings("unchecked")
+	//Cannot impose casting to Long because of the mongo driver. Get a Number and then retrieve longValue
+	public Long countByIsin(String isin) {
+
+		String query = "SELECT count(p) FROM Position p JOIN p.assets a WHERE a.isin = :isin";
+
+		return getEntityManager().createQuery(query, Number.class)
+				.setParameter("isin", isin)
+				.getSingleResult()
+				.longValue();
+	}
+
+	public Long countByIsinNative(String isin) {
+
+		return (Long)getEntityManager()
+				.createNativeQuery("db.positions.count({ 'assets.isin' : '"+isin+"'"+" })" )
+				.getSingleResult();
+	}
+
+	//JPQL with JOIN works
 	public List<Position> findByIsinPaged(String isin, Long offset, Long pageSize) {
-		
-		return getEntityManager()
-	            .createNativeQuery( "{ 'assets.isin' : '"+isin+"'"+" }", Position.class )
-	            .setFirstResult(offset.intValue())
-	            .setMaxResults(pageSize.intValue())
-	            .getResultList();
-		 
+
+		String query = "SELECT p FROM Position p JOIN p.assets a WHERE a.isin = :isin";
+
+		return getEntityManager().createQuery(query, Position.class)
+				.setParameter("isin", isin)
+				.setFirstResult(offset.intValue())
+				.setMaxResults(pageSize.intValue())
+				.getResultList();
 	}
-	
+
+	//Native query
+	@SuppressWarnings("unchecked")
+	public List<Position> findByIsin(String isin) {
+
+		return getEntityManager()
+				.createNativeQuery( "{ 'assets.isin' : '"+isin+"'"+" }", Position.class )
+				.getResultList();
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Position> findByIsinPagedNative(String isin, Long offset, Long pageSize) {
+
+		return getEntityManager()
+				.createNativeQuery( "{ 'assets.isin' : '"+isin+"'"+" }", Position.class )
+				.setFirstResult(offset.intValue())
+				.setMaxResults(pageSize.intValue())
+				.getResultList();
+
+	}
+
 	//Criteria query not yet supported by hibernate-ogm
 	public List<Position> findByIsinPagedCriteria(String isin, Long offset, Long pageSize) {
 
@@ -78,7 +101,7 @@ public class PositionDAO extends BaseDAO<Position> {
 
 	}
 
-	//JPQL not supported by hibernate-ogm to filter on @ElementCollection fields
+	//JPQL not supported by hibernate-ogm to filter on @ElementCollection fields with this syntax
 	public List<Position> findByIsinPagedJPQL(String isin, Long offset, Long pageSize) {
 
 		TypedQuery<Position> query = getEntityManager().createQuery("SELECT p FROM Position p WHERE p.assets.isin = :isin", Position.class);
