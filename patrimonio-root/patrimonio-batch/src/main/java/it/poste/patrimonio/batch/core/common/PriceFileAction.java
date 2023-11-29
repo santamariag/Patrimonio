@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -40,7 +41,7 @@ public class PriceFileAction extends JobAction {
 		elaborateFile(getJobContext().get("params"));
 		
 	}
-	
+
 	public boolean elaborateFile(Map<String, List<String>> parameters) {
 
 		String input=new StringBuilder()
@@ -58,10 +59,11 @@ public class PriceFileAction extends JobAction {
 			} catch (FileNotFoundException e) {
 				log.error(e.getMessage());
 			}
-			List<PriceApi> prices = new CsvToBeanBuilder<PriceApi>(reader)
+			Iterator<PriceApi> priceIterator = new CsvToBeanBuilder<PriceApi>(reader)
 					.withType(PriceApi.class)
 					.build()
-					.parse();
+					.iterator();
+					
 
 			try {
 				reader.close();
@@ -69,7 +71,7 @@ public class PriceFileAction extends JobAction {
 				log.error(e.getMessage());
 			}
 
-			boolean success=managePersistence(prices);
+			boolean success=managePersistence(priceIterator);
 
 			return success ? moveToCompleted(file, parameters.get("completedPath").get(0))
 					: moveToDiscarded(file, parameters.get("discardedPath").get(0));
@@ -79,11 +81,13 @@ public class PriceFileAction extends JobAction {
 
 	}
 
-	private boolean managePersistence(List<PriceApi> prices) {
+	private boolean managePersistence(Iterator<PriceApi> priceIterator) {
 
 		boolean success=true;
 		try {
-			prices.forEach(p->{
+			//prices.forEach(p->{
+			while(priceIterator.hasNext()) {
+				PriceApi p=priceIterator.next();
 				log.info("Elaborating "+p);
 
 				Optional<PriceApi> priceOpt=batchService.getOne(p.getIsin());
@@ -102,7 +106,7 @@ public class PriceFileAction extends JobAction {
 					batchService.managePriceAndPosition(p, Mode.INSERT, paging.getPageSize());
 				}
 
-			});
+			}//);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			success=false;
