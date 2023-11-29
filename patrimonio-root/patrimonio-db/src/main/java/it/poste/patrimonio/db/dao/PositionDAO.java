@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -35,11 +36,16 @@ public class PositionDAO extends BaseDAO<Position> {
 	public Long countByIsin(String isin) {
 
 		String query = "SELECT count(p) FROM Position p JOIN p.assets a WHERE a.isin = :isin";
+		
+		try {
+			return getEntityManager().createQuery(query, Number.class)
+					.setParameter("isin", isin)
+					.getSingleResult()
+					.longValue();
+		} catch(NoResultException nre){
 
-		return getEntityManager().createQuery(query, Number.class)
-				.setParameter("isin", isin)
-				.getSingleResult()
-				.longValue();
+			return 0L;		
+		}
 	}
 
 	public Long countByIsinNative(String isin) {
