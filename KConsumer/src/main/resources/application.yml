@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: KConsumer 
+  profiles:
+    active: dev
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/Test?retryWrites=true&w=majority # Set this to mongodb connection string
+
+server:
+  port: 8080
+  
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev  
+
+kafka:
+  bootstrapAddress: localhost:9092 #set this to your kafka bootstrap server
+  groupId: ciao
+  jaas: org.apache.kafka.common.security.plain.PlainLoginModule required username='' password='; # Set this if you are using authentication
+  topicName: kafka-mongo-integration
+
+logging:
+  level:
+    org:
+      springframework:
+        data: debug
