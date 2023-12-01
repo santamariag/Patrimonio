@@ -14,6 +14,7 @@
   	<module>patrimonio-bl</module>
   	<module>patrimonio-ms</module>
   	<module>patrimonio-kconsumer</module>
+  	<module>patrimonio-kproducer</module>
   	<module>patrimonio-batch</module>
   </modules>
   
@@ -236,6 +237,12 @@
     		<groupId>org.mapstruct</groupId>
     		<artifactId>mapstruct-processor</artifactId>
     		<version>1.6.0.Beta1</version>
+		</dependency>
+		
+		 <dependency>
+ 			<groupId>io.dropwizard.modules</groupId>
+  			<artifactId>dropwizard-kafka</artifactId>
+  			<version>1.7.0</version>
 		</dependency>
 			
 		</dependencies>

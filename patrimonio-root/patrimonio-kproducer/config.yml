@@ -1,0 +1,39 @@
+server:
+  maxThreads: 512
+  applicationContextPath: /Patrimonio
+  applicationConnectors:
+    - type: http
+      port: 8098
+  adminConnectors:
+    - type: http
+      port: 8099
+
+logging:
+  level: INFO
+  loggers:
+    it.poste.patrimonio: DEBUG
+    
+producer:
+  type: basic
+  bootstrapServers:
+    - 127.0.0.1:9092
+  name: KProducer
+  keySerializer:
+    type: string
+  valueSerializer:
+    type: custom-serializer
+  acks: all
+  retries: 2147483647 # int max value
+  maxInFlightRequestsPerConnection: 1
+  maxPollBlockTime: 10s
+  #security:
+  #  securityProtocol: sasl_ssl
+  #  sslProtocol: TLSv1.2
+  #  saslMechanism: PLAIN
+  #  saslJaas: "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"<username>\" password=\"<password>\";"
+  
+topic:
+  name: kafka-mongo-integration
+  partitions: 1
+  replicationFactor: 1
+  

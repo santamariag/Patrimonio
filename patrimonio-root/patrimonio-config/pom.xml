@@ -29,5 +29,11 @@
     		<groupId>org.knowm</groupId>
     		<artifactId>dropwizard-sundial</artifactId>
 		</dependency>
+		
+		<dependency>
+ 			<groupId>io.dropwizard.modules</groupId>
+  			<artifactId>dropwizard-kafka</artifactId>
+		</dependency>
+		
   </dependencies>
 </project>

@@ -49,7 +49,7 @@ public class PositionResource {
     /**
      * Constructor.
      *
-     * @param positionService the dao position.
+     * @param positionService the service position.
      */
     @Inject
     public PositionResource(PositionService positionService) {
