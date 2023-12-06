@@ -7,16 +7,15 @@ import java.util.Map;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.persist.PersistService;
 
 import io.dropwizard.cli.ConfiguredCommand;
 import io.dropwizard.setup.Bootstrap;
 import it.poste.patrimonio.batch.BatchModule;
-import it.poste.patrimonio.batch.PersistenceModule;
 import it.poste.patrimonio.batch.core.common.PriceFileAction;
 import it.poste.patrimonio.bl.service.BatchService;
 import it.poste.patrimonio.config.batch.PatrimonioBatchConfiguration;
 import it.poste.patrimonio.config.batch.PriceFileConfiguration;
+import it.poste.patrimonio.db.configuration.PersistInitialiser;
 import lombok.extern.slf4j.Slf4j;
 import net.sourceforge.argparse4j.inf.Namespace;
 import net.sourceforge.argparse4j.inf.Subparser;
@@ -65,24 +64,20 @@ public class BatchCommand extends ConfiguredCommand<PatrimonioBatchConfiguration
 		
 		log.info(this.getName()+" command launched");
 		
-		final Injector injector = Guice.createInjector(new PersistenceModule(configuration));
+		final Injector injector = Guice.createInjector(new BatchModule(configuration));
 		
-		PersistService persistService = injector.getInstance(PersistService.class);
+		PersistInitialiser persistInitializer=injector.getInstance(PersistInitialiser.class);
 		
-		persistService.start();
-		
-		final Injector childInjector = injector.createChildInjector(new BatchModule(configuration));
-
 		Map<String, Object> paramsFromInput=namespace.getAttrs();
 		
 		Map<String, List<String>> paramsFromConfig=buildParameters(configuration.getPriceFileConfiguration());
 		
 		Map<String, List<String>> mergedParams=mergeParameters(paramsFromInput, paramsFromConfig);
 						
-		new PriceFileAction(childInjector.getInstance(BatchService.class), configuration.getPageConfig())
+		new PriceFileAction(injector.getInstance(BatchService.class), configuration.getPageConfig())
 						.elaborateFile(mergedParams);
 		
-		persistService.stop();
+		persistInitializer.stop();
 		
 		log.info(this.getName()+" command completed");
 	}
