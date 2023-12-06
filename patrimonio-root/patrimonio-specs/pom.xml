@@ -1,0 +1,104 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>it.poste.patrimonio</groupId>
+    <artifactId>patrimonio-root</artifactId>
+    <version>${revision}</version>
+  </parent>
+  <artifactId>patrimonio-specs</artifactId>
+  <name>PatrimonioSpecs</name>
+  <description>Patrimonio API Specification</description>
+  
+  <dependencies>
+		<dependency>
+	            <groupId>com.smoketurner</groupId>
+	            <artifactId>dropwizard-swagger</artifactId>
+	            
+	        </dependency>
+		<dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+        </dependency>
+        <dependency>
+    		<groupId>javax.ws.rs</groupId>
+    		<artifactId>javax.ws.rs-api</artifactId>
+    		<version>2.1.1</version>
+		</dependency>
+  </dependencies>
+  
+  <build>
+		<plugins>
+			<plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <annotationProcessorPaths>
+			            <path>
+			                <groupId>org.mapstruct</groupId>
+			                <artifactId>mapstruct-processor</artifactId>
+			                <version>1.6.0.Beta1</version>
+			            </path>
+			            <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.28</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>0.2.0</version>
+                        </path>
+        			</annotationProcessorPaths>
+                </configuration>
+            </plugin>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>3.3.4</version>
+				<executions>
+					<execution>
+						<id>patrimonio-specs-generate-api</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<!-- Input/Output -->
+							<inputSpec>${project.basedir}/src/main/resources/PatrimonioCliente_1.0.2.yaml</inputSpec>
+							<output>${project.build.directory}/generated-sources</output>					
+							<!-- Language/Library -->
+							<generatorName>jaxrs-spec</generatorName>
+							<library></library>
+							<!-- Packages -->
+							<apiPackage>${project.groupId}.specs.api</apiPackage>
+							<modelPackage>${project.groupId}.specs.model</modelPackage>
+							<!-- Extra Configs -->
+							<configOptions>
+								<sourceFolder>src/main/java</sourceFolder>
+								<configPackage>${project.groupId}.specs.configuration</configPackage>
+								<dateLibrary>java8</dateLibrary>
+								<hideGenerationTimestamp>true</hideGenerationTimestamp>
+								<interfaceOnly>true</interfaceOnly>
+								<returnSuccessCode>true</returnSuccessCode>
+								<swaggerDocketConfig>true</swaggerDocketConfig>
+								<useOptional>true</useOptional>
+								<useTags>true</useTags>
+								<returnResponse>true</returnResponse>
+							</configOptions>
+							<!--<modelNameSuffix>DTO</modelNameSuffix>-->
+							<skipIfSpecIsUnchanged>true</skipIfSpecIsUnchanged>
+
+							<!-- Override default implementation of Swagger Docket Config. Scan 
+								'rsApiPackage' instead of 'apiPackage' -->
+							<additionalProperties>
+								<additionalProperty>rsApiPackage=${project.groupId}.rs.api</additionalProperty>
+							</additionalProperties>
+							<templateDirectory>src/main/resources/templates</templateDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

@@ -18,7 +18,9 @@ import io.federecio.dropwizard.swagger.SwaggerBundle;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 import it.poste.patrimonio.config.ms.PatrimonioServiceConfiguration;
 import it.poste.patrimonio.db.configuration.PersistInitialiser;
+import it.poste.patrimonio.ms.resources.DettaglioPatrimonioResource;
 import it.poste.patrimonio.ms.resources.PositionResource;
+import it.poste.patrimonio.ms.resources.exception.CustomExceptionMapper;
 import it.poste.patrimonio.ms.resources.ws.PositionSoapService;
 
 public class PatrimonioServiceApplication extends Application<PatrimonioServiceConfiguration> {
@@ -63,6 +65,13 @@ public class PatrimonioServiceApplication extends Application<PatrimonioServiceC
     	
     	 final Injector injector = Guice.createInjector(new AppModule(configuration, environment));
          environment.jersey().register(injector.getInstance(PositionResource.class));
+         
+         //Register test implementation for Dettaglio Patrimonio from shared YAML 1.0.2
+         environment.jersey().register(injector.getInstance(DettaglioPatrimonioResource.class));
+         
+         //Register global custom exception handler
+         environment.jersey().register(new CustomExceptionMapper());
+         
          injector.getInstance(PersistInitialiser.class);
          
          jaxWsBundle.publishEndpoint(new EndpointBuilder(configuration.getSoapConfig().getPositionEndPoint(), injector.getInstance(PositionSoapService.class))
