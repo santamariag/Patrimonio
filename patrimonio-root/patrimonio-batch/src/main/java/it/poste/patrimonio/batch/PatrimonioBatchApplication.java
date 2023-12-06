@@ -15,6 +15,7 @@ import com.mongodb.client.MongoClients;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import it.poste.patrimonio.batch.cli.BatchCommand;
 import it.poste.patrimonio.batch.core.schedule.PriceJob;
 import it.poste.patrimonio.batch.core.task.PriceTask;
 import it.poste.patrimonio.bl.service.BatchService;
@@ -43,6 +44,8 @@ public class PatrimonioBatchApplication extends Application<PatrimonioBatchConfi
               return patrimonioBatchConfiguration.getSundialConfiguration();
             }
           });
+    	    	
+    	bootstrap.addCommand(new BatchCommand("pricebatch", "Price file acquisition"));
     }
 
     @Override
